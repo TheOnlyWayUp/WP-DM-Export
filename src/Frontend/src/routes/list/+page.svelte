@@ -118,9 +118,6 @@ ${tailwind_import}
 
 		content = content + end;
 
-		downloadObjectAsHTML(content, username);
-		downloadObjectAsJson(messages, username);
-
 		return content;
 	}
 </script>
@@ -134,7 +131,7 @@ ${tailwind_import}
 					<div class="label">
 						<span class="label-text text-lg">Which users should be exported?</span>
 					</div>
-					<div class="grid max-h-32 overflow-y-auto">
+					<div class="grid max-h-64 w-fit overflow-y-auto rounded-md">
 						{#each threads as thread}
 							<div class="flex flex-row place-items-center space-x-2 rounded-md bg-white p-4">
 								<div class="avatar">
@@ -161,9 +158,16 @@ ${tailwind_import}
 												data-umami-event="HTML Download">Download</button
 											>
 											<button
-												class="link text-xs"
+												class="link text-sm"
 												on:click={(e) => {
-													downloadObjectAsJson(responses[thread.user.name], thread.user.name);
+													let data = responses[thread.user.name][0];
+													let messages = [];
+													data.forEach((api_data) => {
+														api_data.forEach((message) => {
+															messages.push(message);
+														});
+													});
+													downloadObjectAsJson(messages, thread.user.name);
 												}}
 												data-umami-event="JSON Download">(or Raw)</button
 											>
@@ -175,7 +179,7 @@ ${tailwind_import}
 					</div>
 				</label>
 			</p>
-			<div class="grid max-w-lg grid-cols-3 space-x-5">
+			<div class="z-10 grid max-w-lg grid-cols-3 space-x-5">
 				<button
 					class="btn btn-ghost btn-outline"
 					on:click={(e) => {
@@ -185,7 +189,7 @@ ${tailwind_import}
 					}}>Select All</button
 				>
 				<button
-					class="btn btn-primary z-10"
+					class="btn btn-primary"
 					on:click={async (e) => {
 						await download();
 					}}
