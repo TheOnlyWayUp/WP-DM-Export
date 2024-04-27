@@ -181,7 +181,7 @@ ${tailwind_import}
 					}}>Select All</button
 				>
 				<button
-					class="btn btn-primary"
+					class="btn btn-primary z-10"
 					on:click={async (e) => {
 						await download();
 					}}
