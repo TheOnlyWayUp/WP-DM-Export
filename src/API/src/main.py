@@ -1,8 +1,12 @@
 from typing import Tuple
+from pathlib import Path
+from uuid import uuid4
 import aiohttp
 from fastapi import FastAPI, Depends, Cookie, HTTPException
 from aiohttp_client_cache import CachedSession, FileBackend  # type: ignore
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
+
 
 cache = FileBackend(
     use_temp=True,
@@ -12,8 +16,8 @@ cache = FileBackend(
 base_headers = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 }
+BUILD_PATH = Path(__file__).parent / "build"
 
-from uuid import uuid4
 
 sessions = {}
 
@@ -138,6 +142,16 @@ async def wp_get_messages(
 app = FastAPI()
 
 
+@app.get("/")
+def home():
+    return FileResponse(BUILD_PATH / "index.html")
+
+
+@app.get("/list")
+def home():
+    return FileResponse(BUILD_PATH / "list.html")
+
+
 @app.get("/login")
 async def login(username: str, password: str):
     """Login and return cookies.
@@ -152,7 +166,7 @@ async def login(username: str, password: str):
     Returns:
         RedirectResponse: Redirects to homepage with session authorization cookie.
     """
-    response = RedirectResponse("/")
+    response = RedirectResponse("/list")
     username = username.lower()
 
     uid = str(uuid4())
@@ -182,7 +196,7 @@ def cookie_dep(authorization: str = Cookie(None)):
     Returns:
         dict: Session data.
     """
-    if not authorization:
+    if not authorization or not authorization in sessions:
         raise HTTPException(
             status_code=403, detail="Not authorized, please login first."
         )
@@ -213,7 +227,17 @@ async def get_messages(usernames: str, session_data: dict = Depends(cookie_dep))
     return to_return
 
 
+@app.get("/logout")
+def logout():
+    """Delete authorization cookie if it exists."""
+    response = RedirectResponse("/")
+    response.set_cookie("authorization", "")
+    return response
+
+
+app.mount("/", StaticFiles(directory=BUILD_PATH), "static")
+
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run(app, host="0.0.0.0", port=80)
