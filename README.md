@@ -2,14 +2,16 @@
 ---
 Wattpad is [deleting](https://support.wattpad.com/hc/articles/204412040-Private-messages) all DMs on May 6th 2024. This WebApp implements an export solution.
 
-Export [here](https://export.towu.dev).
+Export [here](https://export.towu.dev). Join the [discord](https://discord.gg/TfDY8G67Ss)!
 
-Join the [discord](https://discord.gg/TfDY8G67Ss)!
 
+Home:
 ![](/images/home.png)
 
+User Selection:
 ![](/images/users.png)
 
+Exported HTML (JSON also available):
 ![](/images/chat.png)
 
 
