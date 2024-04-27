@@ -130,7 +130,7 @@ ${tailwind_import}
 					<div class="label">
 						<span class="label-text text-lg">Which users should be exported?</span>
 					</div>
-					<div class="grid">
+					<div class="grid max-h-32 overflow-y-auto">
 						{#each threads as thread}
 							<div class="flex flex-row place-items-center space-x-2 rounded-md bg-white p-4">
 								<div class="avatar">
