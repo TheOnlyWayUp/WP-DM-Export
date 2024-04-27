@@ -117,6 +117,10 @@ ${tailwind_import}
 		});
 
 		content = content + end;
+
+		downloadObjectAsHTML(content, username);
+		downloadObjectAsJson(messages, username);
+
 		return content;
 	}
 </script>
