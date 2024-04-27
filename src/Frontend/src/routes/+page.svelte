@@ -19,9 +19,9 @@
 			>
 			<a
 				class="btn btn-ghost btn-outline mx-5"
-				href="https://github.com/TheOnlyWayUp"
+				href="https://github.com/TheOnlyWayUp/WP-DM-Export/"
 				target="_blank"
-				data-umami-event="Logout">Source Code</a
+				data-umami-event="Source">Source Code</a
 			>
 		</div>
 
